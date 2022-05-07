@@ -1,4 +1,5 @@
 <?php
+include('database.php');
 $prod = $db->prepare("SELECT * FROM fruitdata order by ID");
 $prod->execute();
 $fruit_data = $prod->fetchAll(\PDO::FETCH_ASSOC);
@@ -73,7 +74,7 @@ function Adminlookup($Fulltable){
                 echo "<td>" . $row['Name'] . "</td>";
                 echo "<td>" . $row['Origin'] . "</td>";
                 echo "<td>" . $row['Organic'] . "</td>";
-                echo "<td>" . $row['Price/Lb'] . "</td>";
+                echo "<td>" . $row['Price'] . "</td>";
                 echo "<td>" . $row['ID'] . "</td>";
             echo "</tr>";
         }
@@ -81,7 +82,7 @@ function Adminlookup($Fulltable){
     }
 
 
-function AddToDb($id,$name,$price,$Orgin,$organ,$db){
+function AddToDb($id,$name,$price,$Orgin,$organ,$db,$desc){
     
     try{
         $ID = intval($id);
@@ -89,8 +90,8 @@ function AddToDb($id,$name,$price,$Orgin,$organ,$db){
         $Price = intval($price);
         $origin = strval($Orgin);
         $Organ = strval($organ);
-        $insert = "INSERT INTO `fruitdata` (`ID`, `Name`, `Price/Lb`, `Origin`, `Organic`) 
-            VALUES('$ID', '$Name', '$Price', '$origin', '$Organ')";
+        $insert = "INSERT INTO `fruitdata` (`ID`, `Name`, `Price/Lb`, `Origin`, `Organic`, `description`) 
+            VALUES('$ID', '$Name', '$Price', '$origin', '$Organ', '$desc')";
 
             $db->exec($insert);
     }catch(Exception $e){
@@ -135,26 +136,77 @@ function CreateAccount($email,$uname,$password,$db){
 // ----------  Cart Functions Start Here ----------------------
 // -------------------------------------------------------------
 
-function addItem($item, $quantity){
-    global $fruits;
-    if($quantity < 1) return;
-
-    if(!isset($_POST['cart'][$item])){
-        $quantity += $_POST['cart'][$item]['qty'];
-        update_item($item, $quantity);
-        return;
+function submitOrder($db){
+    $order = array();
+    $counter = 1;
+    try{
+    $query = "SELECT * FROM cartdata";
+    $stmt = $db->prepare($query);
+    $stmt->execute();
+    $cartData = $stmt->fetchAll();
+    }catch(PDOException $e){
+        print($e);
     }
- 
-    $cost= $fruits[$item]['Price'];
-    $total = $cost * $quantity;
-    $item = array(
-        'name' => $fruits[$item]['name'],
-        'cost' => $cost,
-        'qty' => $quantity,
-        'total' => $total
-    );
+    
+    foreach($cartData as $fruit){
+        $order[$counter]['item'] = $fruit['item'];
+        $order[$counter]['quantity'] = $fruit['qty'];
+        $order[$counter]['price'] = $fruit['price'];
+        $counter++;
+    } 
+    $counter = 1;
+    $tempArr = array();
+    // foreach($order[$counter]['item'] as $item){
+    //     $tempArr[] = implode("[", $item);
+    //     foreach($order[$counter]['quantity'] as $qty){
+    //         $tempArr = implode("," , $qty , ",");
+    //     }
+    //     foreach($order[$counter]['price'] as $price){
+    //         $tempArr = implode($price, "]");
+    //     }
+    // }
+    $result = implode("||", $order);
+    echo($result);
+    $uname = $_SESSION["uname"];
+    try{
+        $query = "INSERT INTO `orders` (`UserID`, `Item`, `Cost`) VALUES('$uname','$result', 13)";
+    }catch(PDOException $e){
+       
+    }
 
-    $_POST['cart'][$item] = $item;
+
+}
+
+function addItem($item, $quantity, $db){
+    include('database.php');
+   //print($item);
+
+    try{
+        $query = "SELECT `Price` FROM fruitdata
+        WHERE Name = '$item'";
+        $stmt = $db->prepare($query);
+        $stmt->execute();
+        $pricelist = $stmt->fetchAll();
+    }catch(PDOException $e){
+        print($e);
+    }
+    foreach($pricelist as $price){
+        $finalPrice = $price['Price'];
+        print($item . "|" . $quantity. "|" . $finalPrice);
+    }
+    print(" Price:" . $finalPrice);
+    try{
+        $insert = "INSERT INTO `cartdata` ( `item`, `qty`, `price`) VALUES('$item', $quantity, $finalPrice)";
+        $db->exec($insert);
+    }catch(PDOException $e){
+        print($e);
+    }
+}
+
+function clearCart(){
+    include('database.php');
+    $remove = "DELETE FROM cartdata";
+    $db->exec($remove);
 }
 
 function getTotal(){

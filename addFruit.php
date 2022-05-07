@@ -8,7 +8,7 @@ ob_end_clean();
 $itemToAdd =  $_POST['fruitID'];
 $quantityToAdd = $_POST['qty'];
 
-addItem($itemToAdd, $quantityToAdd);
+addItem($itemToAdd, $quantityToAdd, $db);
 
 header("Location: cartview.php");
 

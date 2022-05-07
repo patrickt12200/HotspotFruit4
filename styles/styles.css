@@ -104,6 +104,7 @@ th, td {
     height: 50%;
 }
 .card{
+    text-align: center;
     height: 250px;
     width: 50%;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);

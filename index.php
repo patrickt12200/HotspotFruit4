@@ -34,20 +34,21 @@
 </div>
     <div class="menu">
         <ul>
-            <?php
-                 if($_SESSION['Type'] == 'A'){
-                echo "admin controls:  .";
-                echo "<a href='index.php'>Home</a>";
-                echo "<a href='infochange.php'>EDIT DATA</a>";
-                echo "<a href='Orderviewer.php'>Customer Orders</a>";
-                }           
-                ?>
             <li><a href="AllFruits.php">All our Fruits</a></li>
             <li><a href="cart.php">Cart</a></li>
             <li><a href="about.php">About</a></li>
             <li><a href="Login.php">Log In</a></li>
         </ul>
     </div>
-
 </body>
+<footer>
+<?php
+                 if($_SESSION['Type'] == 'A'){
+                echo "admin controls:  .<br>";
+                echo "<a href='index.php'>Home</a><br>";
+                echo "<a href='infochange.php'>EDIT DATA</a><br>";
+                echo "<a href='Orderviewer.php'>Customer Orders</a><br>";
+                }           
+                ?>
+    </footer>
 </html>

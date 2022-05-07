@@ -10,9 +10,9 @@
     
 
     if($_SESSION['Type'] == 'A'){
-        echo "<a href='index.php'>Home</a>";
-        echo "<a href='Orderviewer.php'>Customer Orders</a>";
-        echo "<a href='infochange.php'>EDIT DATA</a>";
+        echo "<a href='index.php'>Home</a><br>";
+        echo "<a href='Orderviewer.php'>Customer Orders</a><br>";
+        echo "<a href='infochange.php'>EDIT DATA</a><br>";
         
     }
     else{
@@ -60,7 +60,8 @@
           <label>Fruit Organic: </label><input type="text" name="fruitOrganic">
           <br>
           <label>Fruit Price: </label><input type="text" name="fruitPrice">
-          <br>        
+          <br>  
+          <label>Fruit Description: </label><input type="text" name="fruitDescription">      
           <br>
           <input type='submit' name='submit' value="ADD">
       </form>

@@ -39,7 +39,6 @@ include('Taskbar.php') ?>
     <?php echo $i; endfor ?>
 </option>
 </select>
-
 <input type="submit" class="button" value="Add to Cart!">
 
 </form>
@@ -53,8 +52,7 @@ include('Taskbar.php') ?>
                     <h2 class="title" id="<?php echo$fruit['Name']; ?>"><?php echo$fruit['Name']; ?></h2>
                     <p class="description"><?php echo$fruit['description']; ?></p>
                     <p class="price">$<?php echo$fruit['Price']; ?></p>    
-                    <p id="fruitID" class="price">Fruit ID:<?php echo$fruit['ID']; ?></p>
-                    <input type="hidden" name="fruitID" value="<?php echo $counter ?>" method="post">               
+                    <input type="hidden" name="fruitID" value="<?php echo $fruit['Name'] ?>" method="post">               
                     </div>
                 </div>
             </div>

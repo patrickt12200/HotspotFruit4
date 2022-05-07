@@ -1,5 +1,9 @@
 <?php
 include('Taskbar.php');
+include('database.php');
+$prod = $db->prepare("SELECT * FROM cartdata order by price");
+$prod->execute();
+$cart_data = $prod->fetchAll(\PDO::FETCH_ASSOC);
 ?>
 
 
@@ -18,26 +22,33 @@ include('Taskbar.php');
 <body>
     <h1>Cart</h1>
     <main>
-    <?php if(empty($_POST['cart'])){ ?>
-        <p>Your cart is empty.</p>
-        <?php }else{?>
             <form action="." method="post">
                 <input type="hidden" name="action" value="update">
-                <table>
+                <table class='card'>
                 <tr>
                     <th>Item</th>
                     <th>Price</th>
                     <th>Quantity</th>
                    <th>Item Total</th>                   
-        </tr>
-
-        <?php foreach($_SESSION['cart'] as $key):
-        $cost = number_format($item['price'], 2);
-        $total = number_format($item['total'], 2);
-        endforeach;
-        }
-        ?>
+                 </tr>
+                 <tr>
+                     <?php foreach($cart_data as $key => $cart): ?>
+                <th><?php echo $cart['item']; ?></th>
+                <th><?php echo $cart['price']; ?></th>
+                <th><?php echo $cart['qty']; ?></th>
+                <th><?php echo $cart['qty'] * $cart['price'] ; ?></th>
+</tr>
+                     </form>
+<?php endforeach; ?>
         </table>
+
+        <form action="removeFruit.php" method="post">
+        <input type="submit" class="button" value="Clear Cart">
+        </form>
+
+        <form action="ThankYou.php" method="post">
+        <input type="submit" class="button" value="Submit Order" name="SubmitOrder">
+        </form>
     </main>
 </body>
 

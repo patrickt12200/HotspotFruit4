@@ -21,7 +21,8 @@
             $Orgin = $_POST['fruitOrigin'];
             $organ = $_POST['fruitOrganic'];
             $price = $_POST['fruitPrice'];
-            AddToDb($id,$name,$price,$Orgin,$organ,$db);
+            $description = $_POST['fruitDescription'];
+            AddToDb($id,$name,$price,$Orgin,$organ,$db, $description);
             header("Location:../InfoChange.php");
         }
         }
