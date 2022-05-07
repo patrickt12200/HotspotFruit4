@@ -1,0 +1,23 @@
+
+#taskbar{
+    text-align: center;
+}
+.top_nav{
+    background: transparent;
+    overflow: auto;
+    margin-top: 30px;
+}
+
+.top_nav a{
+    width: 10%;
+    color: black;
+    padding: 14px 10px;
+    display: inline-block;
+    text-decoration: none;
+    font-size: 18px;
+}
+
+.top_nav a:hover {
+    background-color: darkgray;
+    color: black;
+}
